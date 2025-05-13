@@ -10,6 +10,8 @@ interface Car {
   pricePerDay: number;
 }
 
+
+
 export class CarController {
   async createCar(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { carBrand, carModel, year, pricePerDay } = req.body;
@@ -25,15 +27,18 @@ export class CarController {
     }
   }
 
-  async getAllCars(_req: Request, res: Response, next: NextFunction): Promise<void> {
+  async getAllCars(_req: Request, res: Response) {
     try {
-      const [cars] = await db.conn.query<(Car & RowDataPacket)[]>('SELECT * FROM cars');
+      const [cars] = await db.conn.query('SELECT * FROM cars');
+      console.log('✅ Cars from DB:', cars);
       res.json(cars);
     } catch (error) {
-      console.error('❌ Error fetching cars:', error);
+      console.error('❌ Error fetching cars:', error); // ← това ще ни покаже истинската причина
       res.status(500).json({ message: 'Server error' });
     }
   }
+
+
 
   async getCarById(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { id } = req.params;

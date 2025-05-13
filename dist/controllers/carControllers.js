@@ -25,14 +25,15 @@ class CarController {
             }
         });
     }
-    getAllCars(_req, res, next) {
+    getAllCars(_req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const [cars] = yield database_1.db.conn.query('SELECT * FROM cars');
+                console.log('✅ Cars from DB:', cars);
                 res.json(cars);
             }
             catch (error) {
-                console.error('❌ Error fetching cars:', error);
+                console.error('❌ Error fetching cars:', error); // ← това ще ни покаже истинската причина
                 res.status(500).json({ message: 'Server error' });
             }
         });

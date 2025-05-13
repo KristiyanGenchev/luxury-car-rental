@@ -7,7 +7,6 @@ import { currentDateOfExecution } from './common/middlewares';
 import { userRoutes } from './routes/userRoutes';
 import { carRoutes } from './routes/carRoutes';
 import { bookingRoutes } from './routes/bookingRoutes';
-
 dotenv.config();
 
 const app = express();
@@ -21,6 +20,7 @@ app.use(currentDateOfExecution); // custom middleware: logs current date
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/cars', carRoutes);
+console.log(typeof carRoutes);
 app.use('/api/bookings', bookingRoutes);
 
 // 404 fallback for undefined routes

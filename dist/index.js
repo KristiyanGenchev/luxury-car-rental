@@ -21,6 +21,7 @@ app.use(middlewares_1.currentDateOfExecution); // custom middleware: logs curren
 // Routes
 app.use('/api/users', userRoutes_1.userRoutes);
 app.use('/api/cars', carRoutes_1.carRoutes);
+console.log(typeof carRoutes_1.carRoutes);
 app.use('/api/bookings', bookingRoutes_1.bookingRoutes);
 // 404 fallback for undefined routes
 app.use((_req, res) => {
