@@ -1,25 +1,31 @@
 import { useEffect, useState } from 'react';
 
 type Car = {
-    id: number;
-    make: string;
-    model: string;
+    carId: number;
+    carBrand: string;
+    carModel: string;
     year: number;
+    pricePerDay: number;
 };
 
 export default function App() {
     const [cars, setCars] = useState<Car[]>([]);
-    const [formData, setFormData] = useState({ make: '', model: '', year: '' });
+    const [formData, setFormData] = useState({ carBrand: '', carModel: '', year: '', pricePerDay: ''});
+
 
     useEffect(() => {
         console.log("Fetching cars...");
-        fetch('http://localhost:3001/api/cars')
+        fetch('/api/cars')
             .then(res => res.json())
             .then(data => {
                 console.log("Received cars:", data);
                 setCars(data);
             })
-            .catch(err => console.error("Fetch error:", err));
+            .catch(err => {
+            console.error("Fetch error:", err)
+                alert("Error loading cars:" + err.message);
+            });
+
     }, []);
 
 
@@ -32,22 +38,31 @@ export default function App() {
         await fetch('/api/cars', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...formData, year: Number(formData.year) }),
+            body: JSON.stringify({ carBrand: formData.carBrand, carModel: formData.carModel ,year: Number(formData.year), pricePerDay: Number(formData.pricePerDay) }),
         });
-        setFormData({ make: '', model: '', year: '' });
+        setFormData({ carBrand: '', carModel: '', year: '', pricePerDay: '' });
 
         const updated = await fetch('/api/cars').then(res => res.json());
         setCars(updated);
     };
 
+
+    <input
+        name="carBrand"
+        placeholder="Brand"
+        value={formData.carBrand}
+        onChange={handleChange}
+    />
+
+
+
+
     return (
         <div className="p-6 max-w-xl mx-auto">
             <h1 className="text-2xl font-bold mb-4">Car List</h1>
             <ul className="space-y-2 mb-6">
-                {cars.map(car => (
-                    <li key={car.id} className="bg-gray-100 p-3 rounded shadow">
-                        {car.make} {car.model} ({car.year})
-                    </li>
+                {Array.isArray(cars) && cars.map(car => (
+                    <li key={car.carId} className="bg-gray-100 p-3 rounded shadow">{car.carBrand} {car.carModel} ({car.year}) - ${car.pricePerDay}/day</li>
                 ))}
             </ul>
 
@@ -55,14 +70,14 @@ export default function App() {
                 <input
                     name="make"
                     placeholder="Make"
-                    value={formData.make}
+                    value={formData.carBrand}
                     onChange={handleChange}
                     className="w-full p-2 border rounded"
                 />
                 <input
                     name="model"
                     placeholder="Model"
-                    value={formData.model}
+                    value={formData.carModel}
                     onChange={handleChange}
                     className="w-full p-2 border rounded"
                 />

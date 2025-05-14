@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { db } from '../config/database';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
+
 interface User {
   userID: number;
   username: string;

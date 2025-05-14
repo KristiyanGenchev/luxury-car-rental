@@ -66,6 +66,5 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;

@@ -9,3 +9,5 @@ carRoutes.post('/', carController.createCar);
 carRoutes.put('/:id', carController.updateCar);
 carRoutes.delete('/:id', carController.deleteCar);
 
+console.log('🚀 carRoutes file loaded');
+console.log('📡 carRoutes loaded');

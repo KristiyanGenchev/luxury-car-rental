@@ -15,10 +15,13 @@ interface Car {
 export class CarController {
   async createCar(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { carBrand, carModel, year, pricePerDay } = req.body;
+
+    console.log('📥 Incoming data:', req.body);
+
     try {
       await db.conn.query(
-        'INSERT INTO cars (carBrand, carModel, year, pricePerDay) VALUES (?, ?, ?, ?)',
-        [carBrand, carModel, year, pricePerDay]
+          'INSERT INTO cars (carBrand, carModel, year, pricePerDay) VALUES (?, ?, ?, ?)',
+          [carBrand, carModel, year, pricePerDay]
       );
       res.status(201).json({ message: '✅ Car added successfully' });
     } catch (error) {
@@ -27,16 +30,22 @@ export class CarController {
     }
   }
 
+
   async getAllCars(_req: Request, res: Response) {
+    console.log('📡 GET /api/cars called');
     try {
       const [cars] = await db.conn.query('SELECT * FROM cars');
-      console.log('✅ Cars from DB:', cars);
+      console.log('✅ Cars fetched:', cars);
       res.json(cars);
-    } catch (error) {
-      console.error('❌ Error fetching cars:', error); // ← това ще ни покаже истинската причина
+    } catch (err) {
+      console.error('❌ Error in getAllCars:', err);
       res.status(500).json({ message: 'Server error' });
     }
   }
+
+
+
+
 
 
 
